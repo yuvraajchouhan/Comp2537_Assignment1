@@ -171,7 +171,7 @@ app.get('/logout', (req, res) => {
 
 app.get('*', (req, res) => {
     res.status(404);
-    res.send('<h1>404 Page Not Found</h1>');
+    res.render('404Page');
 });
 
 app.listen(port, () => {
