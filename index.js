@@ -43,8 +43,10 @@ mongoose.connect(process.env.MONGODB_URI || `mongodb+srv://${mongodb_user}:${mon
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    user_type: { type: String, default: 'user', enum: ['user', 'admin'] }
 });
+
 
 const User = mongoose.model('User', userSchema);
 
@@ -120,6 +122,7 @@ app.post('/login', async (req, res) => {
         }
         req.session.loggedIn = true;
         req.session.name = user.name;
+        req.session.user_type = user.user_type;
         res.redirect('/members');
     } catch (err) {
         console.log(err);
@@ -141,6 +144,66 @@ app.get('/logout', (req, res) => {
     req.session.destroy()
     res.redirect('/');
     
+});
+
+// method that checks if an user type is admin
+// function isAdmin(req) {
+//     if (req.session.user_type == 'admin') {
+//         return true;
+//     }
+//     return false;
+// }
+
+// // middleware function
+// function adminAuthorization(req, res, next) {
+//     if (!isAdmin(req)) {
+//         res.status(403);
+//         res.render("errorMessage", {error: "Not Authorized"});
+//         return;
+//     }
+//     else {
+//         next();
+//     }
+// }
+
+app.get('/admin', async (req, res) => {
+    const result = await User.find().select('username user_type _id');
+    if (!req.session.loggedIn ) {
+        return res.render('notLoggedIn.ejs');
+    }
+
+    if(req.session.user_type != 'admin'){
+        return res.render('errorMessage');
+
+    }
+
+    try {
+        const users = await User.find({});
+        res.render('admin.ejs', { users: users });
+    } catch (err) {
+        console.log(err);
+        res.send('<h1>Error</h1><p>Sorry, an error occurred while processing your request.</p>');
+    }
+});
+
+app.get('/promote/:userId', async (req, res) => {
+    try {
+        await User.updateOne({ _id: req.params.userId }, { $set: { user_type: 'admin' } });
+        res.redirect('/admin');
+    } catch (err) {
+        console.log(err);
+        res.send('<h1>Error</h1><p>Sorry, an error occurred while processing your request.</p>');
+    }
+});
+
+app.get('/demote/:userId', async (req, res) => {
+    try {
+        await User.updateOne({ _id: req.params.userId }, { $set: { user_type: 'user' } });
+        res.redirect('/admin');
+    } catch (err) {
+        console.log(err);
+        res.send('<h1>Error</h1><p>Sorry, an error occurred while processing your request.</p>');
+    }
 });
 
 
