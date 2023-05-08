@@ -1,12 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">  
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>Home</title>
     </head>
+
     <body>
-        <h1>Hello, <%= name %>!</h1>
-        <a href="/members">Members Area</a>
-        <a href="/logout">Log out</a>
-    </body>
-</html>
+        <%- include("templates/header") %>
+            <br><br><br>
+            <div class="px-4 py-5 my-5 text-center">
+                <h1 class="display-5 fw-bold text-body-emphasis">You are at the
+                    Home Page and Logged In!</h1>
+                <br>
+                <div class="col-lg-6 mx-auto">
+                    <div class="d-grid gap-2 d-sm-flex
+                        justify-content-sm-center">
+                        <a href="/members"><button type="button" class="btn
+                                btn-primary btn-lg px-4 gap-3">Members</button></a>
+                        <a href="/logout"><button type="button" class="btn
+                                btn-outline-secondary btn-lg px-4">Log Out</button></a>
+                    </div>
+                </div>
+
+
+            </div>
+            <br><br><br><br><br><br><br><br>
+            <%- include("templates/footer") %>
+
+            </body>
+
+        </html>
