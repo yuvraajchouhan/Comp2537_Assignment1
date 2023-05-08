@@ -33,6 +33,7 @@ store.on('error', function (error) {
 mongoose.connect(process.env.MONGODB_URI || `mongodb+srv://${mongodb_user}:${mongodb_password}@cluster0.n7l0lf2.mongodb.net/test`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    crypto: {secret: mongodb_session_secret}
 
 }).then(() => {
     console.log('MongoDB connected successfully');
