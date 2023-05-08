@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Welcome!</title>
+    </head>
+
+    <body>
+        <%- include("templates/header") %>
+        <br><br><br>
+        <div class="px-4 py-5 my-5 text-center">
+            <h1 class="display-5 fw-bold text-body-emphasis">Welcome, Please Log In or Sign Up!</h1>
+            <br>
+            <div class="col-lg-6 mx-auto">
+              <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/signup"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">Sign Up</button></a>
+                <a href="/login"><button type="button" href="/login" class="btn btn-outline-secondary btn-lg px-4">Log In</button></a>
+              </div>
+            </div>
+
+
+        </div>
+        <br><br><br><br><br><br><br><br>
+        <%- include("templates/footer") %>
+
+    </body>
+
+</html>

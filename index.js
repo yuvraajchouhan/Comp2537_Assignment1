@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const app = express();
 
+app.set('view engine', 'ejs');
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.json());
@@ -56,33 +58,14 @@ app.use(session({
 
 app.get('/', (req, res) => {
     if (req.session.loggedIn) {
-        res.send(`<h1>Hello, ${req.session.name}!</h1>
-            <a href="/members">Members Area</a>
-            <a href="/logout">Log out</a>`);
+        res.render('loggedInHome.ejs', { name: req.session.name });
     } else {
-        res.send(`<h1>Welcome, Please Log In or Sign Up!</h1>
-            <a href="/signup">Sign Up</a>
-            <br><br>
-            <a href="/login">Log In</a>`);
+        res.render('home.ejs');
     }
 });
 
 app.get('/signup', (req, res) => {
-    res.send(`
-        <h1>Sign Up</h1>
-        <form method="POST" action="/signup">
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" required>
-            <br><br>
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
-            <br><br>
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
-            <br><br>
-            <input type="submit" value="Sign Up">
-        </form>
-    `);
+    res.render("signUp");
 });
 
 app.post('/signup', async (req, res) => {
@@ -116,7 +99,7 @@ app.post('/signup', async (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.send(`<h1>Log In</h1> <form method="POST" action="/login"> <label for="email">Email:</label> <input type="email" name="email" id="email" required> <br><br> <label for="password">Password:</label> <input type="password" name="password" id="password" required> <br><br> <input type="submit" value="Log In"> </form>`);
+    res.render("logIn");
 });
 
 app.post('/login', async (req, res) => {
@@ -148,18 +131,9 @@ app.post('/login', async (req, res) => {
 
 app.get('/members', (req, res) => {
     if (!req.session.loggedIn) {
-        return res.send(`<h1>Error</h1><p>You must be logged in to view this page.</p><a href="/login">Log In</a>`);
+        return res.render('notLoggedIn.ejs');
     } else {
-        const images = ['image1.jpeg', 'image2.jpg', 'image3.jpeg'];
-        const randomImage = images[Math.floor(Math.random() * images.length)];
-        res.send(`
-                <h1>Members Area</h1>
-                <p>Hello, ${req.session.name}!</p>
-                <img src="/${randomImage}" alt="Random image"> 
-                <br><br> 
-                <a href="/logout">Log out</a> 
-                <br> 
-                <a href="/">Home</a>`);
+        res.render("members", {name: req.session.name});
     }
 });
 
