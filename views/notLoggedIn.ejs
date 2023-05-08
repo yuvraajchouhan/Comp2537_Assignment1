@@ -6,9 +6,13 @@
     </head>
 
     <body>
+        <%- include("templates/header") %>
         <h1>Not Logged In!</h1>
+        <br>
         <p>You must be logged in to view this page.</p>
-        <a href="/login">Log In</a>
+        <br>
+        <a href="/login"><button type="button" href="/login" class="btn btn-outline-secondary btn-lg px-4">Log In</button></a>
+        <%- include("templates/footer") %>
     </body>
 
 </html>
