@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.json());
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 const mongodb_user = process.env.MONGODB_USER;
 const mongodb_password = process.env.MONGODB_PASSWORD;
