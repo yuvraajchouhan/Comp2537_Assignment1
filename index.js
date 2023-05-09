@@ -166,7 +166,7 @@ function adminAuthorization(req, res, next) {
     }
 }
 
-app.get('/admin', async (req, res) => {
+app.get('/admin', adminAuthorization, async (req, res) => {
     const result = await User.find().select('username user_type _id');
     if (!req.session.loggedIn ) {
         return res.render('notLoggedIn.ejs');
