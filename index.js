@@ -146,30 +146,12 @@ app.get('/logout', (req, res) => {
     
 });
 
-// method that checks if an user type is admin
-function isAdmin(req) {
-    if (req.session.user_type == 'admin') {
-        return true;
-    }
-    return false;
-}
 
-// middleware function
-function adminAuthorization(req, res, next) {
-    if (!isAdmin(req)) {
-        res.status(403);
-        res.render("errorMessage", {error: "Not Authorized"});
-        return;
-    }
-    else {
-        next();
-    }
-}
 
-app.get('/admin', adminAuthorization, async (req, res) => {
+app.get('/admin', async (req, res) => {
     const result = await User.find().select('username user_type _id');
     if (!req.session.loggedIn ) {
-        return res.render('notLoggedIn.ejs');
+        return res.render('logIn');
     }
 
     if(req.session.user_type != 'admin'){
